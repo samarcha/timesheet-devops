@@ -27,7 +27,7 @@ public class User implements Serializable {
 	//@Column(name="USR_FIRST_NAME", length=20, unique=true, nullable=false)
 	private String firstName; 
 	// Test Git
-	
+	//2eme test Git
 	private String lastName;
 	
 	@Temporal(TemporalType.DATE)
