@@ -1,5 +1,10 @@
 package tn.esprit.spring.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import tn.esprit.spring.entities.Contrat;
+import tn.esprit.spring.repository.ContratRepository;
 import tn.esprit.spring.services.ContratServiceImpl;
 import tn.esprit.spring.services.IContratService;
 
@@ -24,13 +30,26 @@ import tn.esprit.spring.services.IContratService;
 public class ContratServiceImplTest {
 	@Autowired
 	IContratService cs;
-
+	@Autowired
+	private ContratRepository repository;
+	private static final Logger L = LogManager.getLogger(ContratServiceImpl.class);
 	
-	public void testRetrieveAllContrats() {
-	List<Contrat> listContrats = cs.retrieveAllContrats();
-	Assertions.assertEquals(16, listContrats.size());
+//	public void testRetrieveAllContrats() {
+//	List<Contrat> listContrats = cs.retrieveAllContrats();
+//	Assertions.assertEquals(4, listContrats.size());
+//	}
+	
+	public void testRetrieveAllContrats()  {		
+		try {
+			List<Contrat>contrats=cs.retrieveAllContrats();
+			assertThat(contrats).size().isGreaterThan(0);
+			for(Contrat c:contrats) {
+				L.info("Le contrat est: "+ c);}
+			L.info("La taille de contrats  ,"+contrats.size());}
+		catch (IllegalArgumentException ex){
+			assertEquals("the table is empty", ex.getMessage());
+		}
 	}
-	
 	
 	public void testAddContrat() throws ParseException, java.text.ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -43,7 +62,7 @@ public class ContratServiceImplTest {
 	
 	public void testUpdateContrat() throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date d = dateFormat.parse("2011-12-6");
+		Date d = dateFormat.parse("2011-11-1");
 		Contrat c = new Contrat (d,"CDIII", 12);
 		Contrat contratUpdated = cs.addContrat(c);
 		Assertions.assertEquals(c.getReference(), contratUpdated.getReference());
@@ -51,13 +70,30 @@ public class ContratServiceImplTest {
 		
 	}
 	
-	public void testDeleteContrat(){
-		cs.deleteContrat(2);
-		Assertions.assertNull(cs.retrieveContrat(2));
+	//public void testDeleteContrat(){
+		//cs.deleteContrat(5);
+		//Assertions.assertNull(cs.retrieveContrat(2));
 		
-	}	
+	//}
+       public  void testDeleteContrat() {
+		
+		Integer id=6;
+		boolean notExistAfterDelete =repository.findById(id).isPresent();
+		boolean isExistBeforeDelete =repository.findById(id).isPresent();
+		if(isExistBeforeDelete) {
+			cs.deleteContrat(id);
+			assertTrue(isExistBeforeDelete);
+			L.info("le contrat est supprimé ");}
+
+		
+		else {
+			assertFalse(notExistAfterDelete);
+			L.info("le contrat est introuvable ");}
+	}
+       
 	
-	private static final Logger L = LogManager.getLogger(ContratServiceImpl.class);
+	
+	
 	
 	@Test
 	public void testAll(){

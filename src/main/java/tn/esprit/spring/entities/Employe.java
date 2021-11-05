@@ -40,7 +40,7 @@ public class Employe implements Serializable {
 	
 	@Enumerated(EnumType.STRING)
 	//@NotNull
-	private Role role;
+	//private Role role;
 	
 	//@JsonBackReference  
 	@JsonIgnore
@@ -56,7 +56,7 @@ public class Employe implements Serializable {
 	}
 	
 		
-	public Employe(int id, String prenom, String nom, String email, String password, boolean actif, Role role) {
+	public Employe(int id, String prenom, String nom, String email, String password, boolean actif) {
 		super();
 		System.out.println("test"); 
 		this.id = id;
@@ -65,26 +65,26 @@ public class Employe implements Serializable {
 		this.email = email;
 		this.password = password;
 		this.actif = actif;
-		this.role = role;
+		
 	}
 
 
 
-	public Employe(String nom, String prenom, String email, String password, boolean actif, Role role) {
+	public Employe(String nom, String prenom, String email, String password, boolean actif) {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.email = email;
 		this.password = password;
 		this.actif = actif;
-		this.role = role;
+		
 	}
 	
-	public Employe(String nom, String prenom, String email, boolean actif, Role role) {
+	public Employe(String nom, String prenom, String email, boolean actif) {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.email = email;
 		this.actif = actif;
-		this.role = role;
+		
 	}
 	
 	public int getId() {
@@ -140,13 +140,7 @@ public class Employe implements Serializable {
 	}
 
 
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
+	
 
 	public List<Departement> getDepartements() {
 		return departements;
@@ -164,11 +158,7 @@ public class Employe implements Serializable {
 		this.contrat = contrat;
 	} 
 
-	@Override
-	public String toString() {
-		return "Employe [id=" + id + ", prenom=" + prenom + ", nom=" + nom + ", email=" + email + ", password="
-				+ password + ", actif=" + actif + ", role=" + role + "]";
-	}
+	
 	
 	
 	
